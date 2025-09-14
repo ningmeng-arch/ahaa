@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.report.mapper.VCustomerDistributionMapper">
+
+    <resultMap type="VCustomerDistribution" id="VCustomerDistributionResult">
+        <result property="industry"    column="industry"    />
+        <result property="customerCount"    column="customer_count"    />
+    </resultMap>
+
+    <sql id="selectVCustomerDistributionVo">
+        select industry, customer_count from v_customer_distribution
+    </sql>
+
+    <select id="selectVCustomerDistributionList" parameterType="VCustomerDistribution" resultMap="VCustomerDistributionResult">
+        <include refid="selectVCustomerDistributionVo"/>
+        <where>
+            <if test="industry != null  and industry != ''"> and industry = #{industry}</if>
+            <if test="customerCount != null "> and customer_count = #{customerCount}</if>
+        </where>
+    </select>
+
+    <select id="selectVCustomerDistributionByIndustry" parameterType="String" resultMap="VCustomerDistributionResult">
+        <include refid="selectVCustomerDistributionVo"/>
+        where industry = #{industry}
+    </select>
+
+    <!--
+    =======================================================================
+    以下 INSERT, UPDATE, DELETE 语句已全部删除！
+    因为 v_customer_distribution 是一个数据库视图，不是真实的表，
+    这些操作会导致数据库错误，甚至破坏数据。
+    =======================================================================
+    -->
+
+</mapper>

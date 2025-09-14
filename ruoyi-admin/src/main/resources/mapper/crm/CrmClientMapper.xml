@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.crm.mapper.CrmClientMapper">
+    
+    <resultMap type="CrmClient" id="CrmClientResult">
+        <result property="clientId"    column="client_id"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientPhone"    column="client_phone"    />
+        <result property="clientIndustry"    column="client_industry"    />
+        <result property="clientStatus"    column="client_status"    />
+        <result property="clientType"    column="client_type"    />
+        <result property="salespersonId"    column="salesperson_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCrmClientVo">
+        select client_id, client_name, client_phone, client_industry, client_status, client_type, salesperson_id, create_by, create_time, update_by, update_time, remark from crm_client
+    </sql>
+
+    <select id="selectCrmClientList" parameterType="CrmClient" resultMap="CrmClientResult">
+        <include refid="selectCrmClientVo"/>
+        <where>  
+            <if test="clientName != null  and clientName != ''"> and client_name like concat('%', #{clientName}, '%')</if>
+            <if test="clientPhone != null  and clientPhone != ''"> and client_phone = #{clientPhone}</if>
+            <if test="clientIndustry != null  and clientIndustry != ''"> and client_industry = #{clientIndustry}</if>
+            <if test="clientStatus != null  and clientStatus != ''"> and client_status = #{clientStatus}</if>
+            <if test="clientType != null  and clientType != ''"> and client_type = #{clientType}</if>
+            <if test="salespersonId != null "> and salesperson_id = #{salespersonId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCrmClientByClientId" parameterType="Long" resultMap="CrmClientResult">
+        <include refid="selectCrmClientVo"/>
+        where client_id = #{clientId}
+    </select>
+
+    <insert id="insertCrmClient" parameterType="CrmClient" useGeneratedKeys="true" keyProperty="clientId">
+        insert into crm_client
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="clientName != null and clientName != ''">client_name,</if>
+            <if test="clientPhone != null">client_phone,</if>
+            <if test="clientIndustry != null">client_industry,</if>
+            <if test="clientStatus != null">client_status,</if>
+            <if test="clientType != null">client_type,</if>
+            <if test="salespersonId != null">salesperson_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="clientName != null and clientName != ''">#{clientName},</if>
+            <if test="clientPhone != null">#{clientPhone},</if>
+            <if test="clientIndustry != null">#{clientIndustry},</if>
+            <if test="clientStatus != null">#{clientStatus},</if>
+            <if test="clientType != null">#{clientType},</if>
+            <if test="salespersonId != null">#{salespersonId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCrmClient" parameterType="CrmClient">
+        update crm_client
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientName != null and clientName != ''">client_name = #{clientName},</if>
+            <if test="clientPhone != null">client_phone = #{clientPhone},</if>
+            <if test="clientIndustry != null">client_industry = #{clientIndustry},</if>
+            <if test="clientStatus != null">client_status = #{clientStatus},</if>
+            <if test="clientType != null">client_type = #{clientType},</if>
+            <if test="salespersonId != null">salesperson_id = #{salespersonId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where client_id = #{clientId}
+    </update>
+
+    <delete id="deleteCrmClientByClientId" parameterType="Long">
+        delete from crm_client where client_id = #{clientId}
+    </delete>
+
+    <delete id="deleteCrmClientByClientIds" parameterType="String">
+        delete from crm_client where client_id in 
+        <foreach item="clientId" collection="array" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </delete>
+</mapper>

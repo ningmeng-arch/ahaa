@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.sales.mapper.SalOpportunityMapper">
+    
+    <resultMap type="SalOpportunity" id="SalOpportunityResult">
+        <result property="opportunityId"    column="opportunity_id"    />
+        <result property="opportunityName"    column="opportunity_name"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="expectedAmount"    column="expected_amount"    />
+        <result property="salesStage"    column="sales_stage"    />
+        <result property="successProbability"    column="success_probability"    />
+        <result property="estimateCloseDate"    column="estimate_close_date"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSalOpportunityVo">
+        select opportunity_id, opportunity_name, customer_id, expected_amount, sales_stage, success_probability, estimate_close_date, remark, create_by, create_time, update_by, update_time from sal_opportunity
+    </sql>
+
+    <select id="selectSalOpportunityList" parameterType="SalOpportunity" resultMap="SalOpportunityResult">
+        <include refid="selectSalOpportunityVo"/>
+        <where>  
+            <if test="opportunityName != null  and opportunityName != ''"> and opportunity_name like concat('%', #{opportunityName}, '%')</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="expectedAmount != null "> and expected_amount = #{expectedAmount}</if>
+            <if test="salesStage != null  and salesStage != ''"> and sales_stage = #{salesStage}</if>
+            <if test="successProbability != null "> and success_probability = #{successProbability}</if>
+            <if test="estimateCloseDate != null "> and estimate_close_date = #{estimateCloseDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectSalOpportunityByOpportunityId" parameterType="Long" resultMap="SalOpportunityResult">
+        <include refid="selectSalOpportunityVo"/>
+        where opportunity_id = #{opportunityId}
+    </select>
+
+    <insert id="insertSalOpportunity" parameterType="SalOpportunity" useGeneratedKeys="true" keyProperty="opportunityId">
+        insert into sal_opportunity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="opportunityName != null and opportunityName != ''">opportunity_name,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="expectedAmount != null">expected_amount,</if>
+            <if test="salesStage != null">sales_stage,</if>
+            <if test="successProbability != null">success_probability,</if>
+            <if test="estimateCloseDate != null">estimate_close_date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="opportunityName != null and opportunityName != ''">#{opportunityName},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="expectedAmount != null">#{expectedAmount},</if>
+            <if test="salesStage != null">#{salesStage},</if>
+            <if test="successProbability != null">#{successProbability},</if>
+            <if test="estimateCloseDate != null">#{estimateCloseDate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalOpportunity" parameterType="SalOpportunity">
+        update sal_opportunity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="opportunityName != null and opportunityName != ''">opportunity_name = #{opportunityName},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="expectedAmount != null">expected_amount = #{expectedAmount},</if>
+            <if test="salesStage != null">sales_stage = #{salesStage},</if>
+            <if test="successProbability != null">success_probability = #{successProbability},</if>
+            <if test="estimateCloseDate != null">estimate_close_date = #{estimateCloseDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where opportunity_id = #{opportunityId}
+    </update>
+
+    <delete id="deleteSalOpportunityByOpportunityId" parameterType="Long">
+        delete from sal_opportunity where opportunity_id = #{opportunityId}
+    </delete>
+
+    <delete id="deleteSalOpportunityByOpportunityIds" parameterType="String">
+        delete from sal_opportunity where opportunity_id in 
+        <foreach item="opportunityId" collection="array" open="(" separator="," close=")">
+            #{opportunityId}
+        </foreach>
+    </delete>
+</mapper>

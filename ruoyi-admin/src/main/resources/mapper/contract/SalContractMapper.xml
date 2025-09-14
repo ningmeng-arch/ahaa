@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.contract.mapper.SalContractMapper">
+    
+    <resultMap type="SalContract" id="SalContractResult">
+        <result property="contractId"    column="contract_id"    />
+        <result property="contractName"    column="contract_name"    />
+        <result property="contractCode"    column="contract_code"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="opportunityId"    column="opportunity_id"    />
+        <result property="totalAmount"    column="total_amount"    />
+        <result property="signDate"    column="sign_date"    />
+        <result property="effectiveDate"    column="effective_date"    />
+        <result property="expiryDate"    column="expiry_date"    />
+        <result property="contractStatus"    column="contract_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSalContractVo">
+        select contract_id, contract_name, contract_code, customer_id, opportunity_id, total_amount, sign_date, effective_date, expiry_date, contract_status, remark, create_by, create_time, update_by, update_time from sal_contract
+    </sql>
+
+    <select id="selectSalContractList" parameterType="SalContract" resultMap="SalContractResult">
+        <include refid="selectSalContractVo"/>
+        <where>  
+            <if test="contractName != null  and contractName != ''"> and contract_name like concat('%', #{contractName}, '%')</if>
+            <if test="contractCode != null  and contractCode != ''"> and contract_code = #{contractCode}</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="opportunityId != null "> and opportunity_id = #{opportunityId}</if>
+            <if test="totalAmount != null "> and total_amount = #{totalAmount}</if>
+            <if test="signDate != null "> and sign_date = #{signDate}</if>
+            <if test="effectiveDate != null "> and effective_date = #{effectiveDate}</if>
+            <if test="expiryDate != null "> and expiry_date = #{expiryDate}</if>
+            <if test="contractStatus != null  and contractStatus != ''"> and contract_status = #{contractStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSalContractByContractId" parameterType="Long" resultMap="SalContractResult">
+        <include refid="selectSalContractVo"/>
+        where contract_id = #{contractId}
+    </select>
+
+    <insert id="insertSalContract" parameterType="SalContract" useGeneratedKeys="true" keyProperty="contractId">
+        insert into sal_contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contractName != null and contractName != ''">contract_name,</if>
+            <if test="contractCode != null and contractCode != ''">contract_code,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="opportunityId != null">opportunity_id,</if>
+            <if test="totalAmount != null">total_amount,</if>
+            <if test="signDate != null">sign_date,</if>
+            <if test="effectiveDate != null">effective_date,</if>
+            <if test="expiryDate != null">expiry_date,</if>
+            <if test="contractStatus != null">contract_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contractName != null and contractName != ''">#{contractName},</if>
+            <if test="contractCode != null and contractCode != ''">#{contractCode},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="opportunityId != null">#{opportunityId},</if>
+            <if test="totalAmount != null">#{totalAmount},</if>
+            <if test="signDate != null">#{signDate},</if>
+            <if test="effectiveDate != null">#{effectiveDate},</if>
+            <if test="expiryDate != null">#{expiryDate},</if>
+            <if test="contractStatus != null">#{contractStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSalContract" parameterType="SalContract">
+        update sal_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contractName != null and contractName != ''">contract_name = #{contractName},</if>
+            <if test="contractCode != null and contractCode != ''">contract_code = #{contractCode},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="opportunityId != null">opportunity_id = #{opportunityId},</if>
+            <if test="totalAmount != null">total_amount = #{totalAmount},</if>
+            <if test="signDate != null">sign_date = #{signDate},</if>
+            <if test="effectiveDate != null">effective_date = #{effectiveDate},</if>
+            <if test="expiryDate != null">expiry_date = #{expiryDate},</if>
+            <if test="contractStatus != null">contract_status = #{contractStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where contract_id = #{contractId}
+    </update>
+
+    <delete id="deleteSalContractByContractId" parameterType="Long">
+        delete from sal_contract where contract_id = #{contractId}
+    </delete>
+
+    <delete id="deleteSalContractByContractIds" parameterType="String">
+        delete from sal_contract where contract_id in 
+        <foreach item="contractId" collection="array" open="(" separator="," close=")">
+            #{contractId}
+        </foreach>
+    </delete>
+</mapper>

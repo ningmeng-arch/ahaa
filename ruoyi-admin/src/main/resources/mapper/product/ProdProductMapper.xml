@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProdProductMapper">
+    
+    <resultMap type="ProdProduct" id="ProdProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="productCode"    column="product_code"    />
+        <result property="productCategory"    column="product_category"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="costPrice"    column="cost_price"    />
+        <result property="stockQuantity"    column="stock_quantity"    />
+        <result property="status"    column="status"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectProdProductVo">
+        select product_id, product_name, product_code, product_category, unit_price, cost_price, stock_quantity, status, description, create_by, create_time, update_by, update_time, remark from prod_product
+    </sql>
+
+    <select id="selectProdProductList" parameterType="ProdProduct" resultMap="ProdProductResult">
+        <include refid="selectProdProductVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="productCode != null  and productCode != ''"> and product_code = #{productCode}</if>
+            <if test="productCategory != null  and productCategory != ''"> and product_category = #{productCategory}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="costPrice != null "> and cost_price = #{costPrice}</if>
+            <if test="stockQuantity != null "> and stock_quantity = #{stockQuantity}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectProdProductByProductId" parameterType="Long" resultMap="ProdProductResult">
+        <include refid="selectProdProductVo"/>
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertProdProduct" parameterType="ProdProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into prod_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="productCode != null and productCode != ''">product_code,</if>
+            <if test="productCategory != null">product_category,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="costPrice != null">cost_price,</if>
+            <if test="stockQuantity != null">stock_quantity,</if>
+            <if test="status != null">status,</if>
+            <if test="description != null">description,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="productCode != null and productCode != ''">#{productCode},</if>
+            <if test="productCategory != null">#{productCategory},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="costPrice != null">#{costPrice},</if>
+            <if test="stockQuantity != null">#{stockQuantity},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProdProduct" parameterType="ProdProduct">
+        update prod_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="productCode != null and productCode != ''">product_code = #{productCode},</if>
+            <if test="productCategory != null">product_category = #{productCategory},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="costPrice != null">cost_price = #{costPrice},</if>
+            <if test="stockQuantity != null">stock_quantity = #{stockQuantity},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteProdProductByProductId" parameterType="Long">
+        delete from prod_product where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteProdProductByProductIds" parameterType="String">
+        delete from prod_product where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+</mapper>
